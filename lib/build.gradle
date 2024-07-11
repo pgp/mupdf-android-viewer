@@ -14,18 +14,19 @@ dependencies {
 
 android {
 	compileSdkVersion 33
+	ndkVersion '21.3.6528147'
 	defaultConfig {
 		minSdkVersion 21
 		targetSdkVersion 34
 	}
-	publishing {
+	/*publishing {
 		singleVariant("release") {
 			withSourcesJar()
 		}
-	}
+	}*/
 }
 
-project.afterEvaluate {
+/*project.afterEvaluate {
 	publishing {
 		publications {
 			release(MavenPublication) {
@@ -65,3 +66,4 @@ project.afterEvaluate {
 		}
 	}
 }
+*/

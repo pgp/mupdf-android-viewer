@@ -5,11 +5,11 @@ buildscript {
 		} else {
 			maven { url "file://${System.properties['user.home']}/MAVEN" }
 		}
-		google()
 		mavenCentral()
+		google()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:7.2.2'
+		classpath 'com.android.tools.build:gradle:4.2.2'
 	}
 }
 
@@ -21,7 +21,7 @@ allprojects {
 			maven { url "file://${System.properties['user.home']}/MAVEN" }
 		}
 		maven { url 'https://maven.ghostscript.com/' }
-		google()
 		mavenCentral()
+		google()
 	}
 }
