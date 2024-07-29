@@ -1,8 +1,10 @@
 package com.artifex.mupdf;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.LocalSocket;
 import android.net.Uri;
@@ -11,6 +13,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.provider.Settings;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
@@ -30,6 +34,27 @@ import java.lang.reflect.Field;
  */
 
 public class ContentProviderUtils {
+
+    public static boolean launchPermissionDialogIfNeeded(Activity activity) {
+        if(!Environment.isExternalStorageManager()) {
+			Toast.makeText(activity, "Please grant all-files access permission", Toast.LENGTH_SHORT).show();
+			// with Android >= 11, by having this signature permission granted by user, we can access all files (both read and write, even external sd and usb drives)
+			Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
+			activity.startActivity(intent);
+			activity.finishAffinity();
+			return false;
+		}
+        return true;
+    }
+
+    public static boolean checkPermissions(Activity activity) {
+        if(!Environment.isExternalStorageManager()) {
+            Toast.makeText(activity, "All-files permission not granted, exiting", Toast.LENGTH_SHORT).show();
+            activity.finishAffinity();
+            return false;
+        }
+        return true;
+    }
 
     public static final File internalStorageDir = Environment.getExternalStorageDirectory();
 
