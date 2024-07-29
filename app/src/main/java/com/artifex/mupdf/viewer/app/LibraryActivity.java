@@ -5,13 +5,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.artifex.mupdf.fitz.Document; /* for file name recognition */
 import com.artifex.mupdf.viewer.DocumentActivity;
 
-public class LibraryActivity extends Activity
-{
+public class LibraryActivity extends Activity {
+
+	static {
+		StrictMode.setVmPolicy(StrictMode.VmPolicy.LAX);
+		StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
+	}
+
 	protected final int FILE_REQUEST = 42;
 	protected boolean selectingDocument;
 

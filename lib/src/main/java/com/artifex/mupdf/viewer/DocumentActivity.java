@@ -1,5 +1,6 @@
 package com.artifex.mupdf.viewer;
 
+import com.artifex.mupdf.ContentProviderUtils;
 import com.artifex.mupdf.fitz.SeekableInputStream;
 
 import android.Manifest;
@@ -220,16 +221,18 @@ public class DocumentActivity extends Activity
 
 			if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 				Uri uri = intent.getData();
-				String mimetype = getIntent().getType();
-
-				if (uri == null)  {
+				if(uri == null)  {
 					showCannotOpenDialog("No document uri to open");
 					return;
 				}
+				String mimetype = getIntent().getType();
+				String path = ContentProviderUtils.getPathFromUri(getApplicationContext(), uri);
+				if(path == null)
+					Toast.makeText(getApplicationContext(), "Warning: unable to retrieve a filesystem path from the conente Uri, coherent page save won't be available", Toast.LENGTH_LONG).show();
 
-				mDocKey = uri.toString();
+				mDocKey = path != null ? path : uri.toString();
 
-				Log.i(APP, "OPEN URI " + uri.toString());
+				Log.i(APP, "OPEN URI or PATH " + mDocKey);
 				Log.i(APP, "  MAGIC (Intent) " + mimetype);
 
 				mDocTitle = null;
@@ -562,7 +565,7 @@ public class DocumentActivity extends Activity
 			mOutlineButton.setVisibility(View.GONE);
 		}
 
-		// Reenstate last state if it was recorded
+		// Reinstate last state if it was recorded
 		SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
 		mDocView.setDisplayedViewIndex(prefs.getInt("page"+mDocKey, 0));
 
